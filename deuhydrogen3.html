@@ -1,0 +1,1019 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hydrogen Lab</title>
+
+  <style>
+    :root{
+      --navy:#071A2B;
+      --navy-2:#0b2545;
+      --accent:#1E90FF;
+      --muted:#6b7280;
+      --bg:#ffffff;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family:Inter, ui-sans-serif, system-ui;
+      margin:0;
+      color:#0f1724;
+      background:var(--bg);
+      line-height:1.5;
+    }
+    header{
+      background:var(--navy-2);
+      color:white;
+      padding:18px 28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    nav a{
+      color:white;
+      text-decoration:none;
+      margin-left:16px;
+      font-weight:600;
+    }
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px;
+    }
+
+    /* HERO / SLIDER */
+    .hero{
+      position:relative;
+      padding:90px 28px;
+      border-radius:12px;
+      text-align:center;
+      min-height:300px;
+      background:var(--bg) center/cover no-repeat;
+      transition: background 0.5s ease;
+      color:white;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.35);
+      border-radius:12px;
+      z-index:0;
+    }
+    .hero h1, .hero p{
+      position:relative;
+      z-index:1;
+    }
+
+    .fade{
+      opacity:0;
+      transition:opacity .5s ease;
+    }
+    .fade.show{
+      opacity:1;
+    }
+
+    #slider-prev, #slider-next{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,0.4);
+      border:none;
+      padding:6px 12px;
+      color:white;
+      font-size:30px;
+      border-radius:6px;
+      cursor:pointer;
+      z-index:2;
+    }
+    #slider-prev{left:20px;}
+    #slider-next{right:20px;}
+
+    /* CARDS */
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+    .card{
+      background:white;
+      padding:18px;
+      border-radius:8px;
+      border:1px solid #e7e7e7;
+    }
+
+    /* PEOPLE */
+    .people{display:flex; gap:12px; flex-wrap:wrap;}
+    .person{
+      width:220px;
+      background:white;
+      border-radius:8px;
+      padding:12px;
+      border:1px solid #e6eef8;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      cursor:pointer;
+    }
+    .person img{
+      width:56px;
+      height:56px;
+      border-radius:8px;
+      object-fit:cover;
+    }
+
+    /* PROJECTS */
+    .project-card{
+      background:white;
+      border:1px solid #dce3ea;
+      border-radius:10px;
+      padding:12px 18px;
+      margin-bottom:10px;
+      cursor:pointer;
+    }
+    .project-card h3{
+      margin:0;
+      font-size:16px;
+    }
+    .more-info{
+      margin-top:10px;
+      display:none;
+      background:#f7f9fb;
+      border-radius:8px;
+      padding:12px;
+      border:1px solid #dce3ea;
+    }
+
+    /* ACCORDION */
+    .accordion-header{
+      cursor:pointer;
+      user-select:none;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:18px;
+      margin-bottom:8px;
+    }
+    .accordion-header::after{
+      content:""; /* ok işareti kaldırıldı */
+    }
+
+    footer{
+      background:var(--navy-2);
+      color:white;
+      text-align:center;
+      padding:16px;
+      margin-top:20px;
+      border-radius:6px;
+    }
+
+    /* LINK STYLING */
+    a.pub-link{
+      color:var(--accent);
+      text-decoration:none;
+    }
+    a.pub-link:hover{
+      text-decoration:underline;
+    }
+  </style>
+</head>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const hero = document.querySelector(".hero");
+  const title = document.getElementById("hero-title");
+  const desc = document.getElementById("hero-desc");
+  const prevBtn = document.getElementById("slider-prev");
+  const nextBtn = document.getElementById("slider-next");
+
+  const slides = [
+    {
+      title: "New Publication Accepted",
+      desc: "Click to see publication details",
+      image: "newpublication.jpg",
+      link: "publication.html"
+    },
+    {
+      title: "TÜBİTAK 1001 Project Accepted",
+      desc: "Click to see project details",
+      image: "1001project.jpg",
+      link: "tubitak1001.html"
+    },
+    {
+      title: "IHTEC 2025 Event",
+      desc: "Click to see event details",
+      image: "ihtec2025.jpg",
+      link: "ihtec2025.html"
+    }
+  ];
+
+  let index = 0;
+
+  function showSlide(i){
+    title.classList.remove("show");
+    desc.classList.remove("show");
+
+    setTimeout(() => {
+      hero.style.backgroundImage = "url(" + slides[i].image + ")";
+      title.textContent = slides[i].title;
+      desc.textContent = slides[i].desc;
+
+      title.classList.add("show");
+      desc.classList.add("show");
+    }, 200);
+  }
+
+  hero.addEventListener("click", function(e){
+    if(e.target.id !== "slider-prev" && e.target.id !== "slider-next"){
+      window.location.href = slides[index].link;
+    }
+  });
+
+  prevBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    index = (index - 1 + slides.length) % slides.length;
+    showSlide(index);
+  });
+
+  nextBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    index = (index + 1) % slides.length;
+    showSlide(index);
+  });
+
+  setInterval(function(){
+    index = (index + 1) % slides.length;
+    showSlide(index);
+  }, 6000);
+
+  showSlide(index);
+
+});
+</script>
+
+
+
+<body>
+
+<header>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div style="font-size:22px; font-weight:700;">Hydrogen Research Group</div>
+    <div style="font-size:13px; opacity:0.8;">Hydrogen Storage & Thermal Management</div>
+  </div>
+
+  <nav>
+    <a href="index.html#home">Home</a>
+    <a href="index.html#research">Research</a>
+    <a href="index.html#facilities">Facilities</a>
+    <a href="index.html#people">People</a>
+    <a href="index.html#publications">Publications</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<main class="container">
+
+<!-- HERO / SLIDER -->
+<section id="home" class="hero">
+  <h1 id="hero-title" class="fade show"></h1>
+  <p id="hero-desc" class="fade show"></p>
+
+  <button id="slider-prev">&#10094;</button>
+  <button id="slider-next">&#10095;</button>
+</section>
+
+<!-- RESEARCH + FACILITIES -->
+<section class="grid" style="margin-top:20px;">
+  <div class="card" id="research">
+    <h2>Research Areas</h2>
+    <p class="muted">We focus on hydrogen storage methods, hydrogen production, fuel cell systems, integrated systems and thermodynamic/CFD analysis.</p>
+    <ul>
+      <li>Hydrogen Storage Methods</li>
+      <li>Hydrogen Production</li>
+      <li>Thermal Management Systems</li>
+      <li>Entropy & Exergy Analysis</li>
+      <li>Numerical Modeling & CFD</li>
+      <li>Fuel Cell Systems</li>
+      <li>Integrated Systems</li>
+    </ul>
+  </div>
+
+  <div class="card" id="facilities">
+    <h2>Facilities & Equipment</h2>
+    <ul>
+      <li>Metal Hydride & Fuel Cell Integrated Systems</li>
+      <li>Differential Schanning Caloritmery (DSC)</li>
+      <li>Climate Chamber</li>
+      <li>Data Recorders</li>
+      <li>CFD & Thermodynamic Simulation Tools</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PEOPLE -->
+<section id="people" class="card" style="margin-top:20px;">
+  <h2>People</h2>
+  <div class="people">
+
+    <a class="person" href="https://avesis.deu.edu.tr/ozgur.colpan" target="_blank">
+      <img src="colpan.png" alt="">
+      <div><strong>Can Özgür Çolpan</strong><div class="micro">Professor</div></div>
+    </a>
+
+    <a class="person" href="https://avesis.deu.edu.tr/azize.ayol" target="_blank">
+      <img src="ayol.jpg" alt="">
+      <div><strong>Azize Ayol</strong><div class="micro">Professor</div></div>
+    </a>
+    
+    <a class="person" href="https://avesis.deu.edu.tr/mehmet.ezan" target="_blank">
+      <img src="ezan.jpg" alt="">
+      <div><strong>Mehmet Akif Ezan</strong><div class="micro">Professor</div></div>
+    </a>
+
+    <a class="person" href="https://avesis.deu.edu.tr/mustafa.karaoglan" target="_blank">
+      <img src="karaoglan.jpg" alt="">
+      <div><strong>Mustafa Umut Karaoğlan</strong><div class="micro">Associate Professor</div></div>
+    </a>
+
+    <a class="person" href="https://avesis.deu.edu.tr/aykut.korkmaz" target="_blank">
+      <img src="korkmaz.jpg" alt="">
+      <div><strong>Süleyman Aykut Korkmaz</strong><div class="micro">Asssistant Professor</div></div>
+    </a>
+
+    <a class="person" href="https://avesis.deu.edu.tr/olgun.konur" target="_blank">
+      <img src="konur.jpg" alt="">
+      <div><strong>Olgun Konur</strong><div class="micro">Asssistant Professor</div></div>
+    </a>
+
+    <a class="person" href="https://www.linkedin.com/in/selimcanbozkır" target="_blank">
+      <img src="bozkir.jpg" alt="">
+      <div><strong>Selim Can Bozkır</strong><div class="micro">Ph.D. Researcher</div></div>
+    </a>
+
+    <a class="person" href="https://avesis.deu.edu.tr/engindeniz.gulay" target="_blank">
+      <img src="gulay.jpg" alt="">
+      <div><strong>Engin Deniz Gülay</strong><div class="micro">Research Assistant</div></div>
+    </a>
+
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications" class="card" style="margin-top:20px;">
+  <h2 class="accordion-header" onclick="toggleAccordion('pub-list')">Publications</h2>
+  <ul id="pub-list" class="accordion-content" style="display:none; margin-top:10px;">
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2025.152854" target="_blank">
+    Çetinkaya, S.A., Ezan, M.A., Karaoğlan, M.U., Korkmaz, S.A., Colpan, C.O. 2026. Investigation of a thermally coupled fuel cell and metal hydride hydrogen storage tank system for vehicular application. International Journal of Hydrogen Energy.   
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.biteb.2025.102420" target="_blank">
+    Yilmaz, B., Durmus, B., Gencoglu, M.T., Colpan, C.O. 2025. Sustainable electricity generation in rural areas using biohydrogen-fed PEM fuel cells. Bioresource Technology Reports. 32. 102420.  
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.rser.2025.116277" target="_blank">
+    Altinisik, H., Celebi. C., Ozden, A., Devrim, Y., Colpan, C.O. 2026. A review on membranes for anion exchange membrane water electrolyzers. Renewable and Sustainable Energy Reviews. 226. Part B. 116277.  
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.enconman.2025.119797" target="_blank">
+    Gulay, E.D., Colpan, C.O., Ezan, M.A. Techno-Economic Assessment of Green Hydrogen Production in Izmir: Evaluating Electrolyzer Technologies, Modularization Strategies, and Renewable Energy Integration . Energy Conversion & Management.  
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2025.01.422" target="_blank">
+    Celebi, C., Colpan, C.O., Devrim, Y. 2025. Performance assessment of anion exchange electrolyzer with PBI-based membrane through 0-D modeling. International Journal of Hydrogen Energy.  
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.enconman.2025.119506" target="_blank">
+    Nalbant Atak, Y., Ince, A.C., Colpan, C.O., Iulianelli, A., Serincan, M.F., Pasaogullari, U., 2025. Thermoeconomic analysis of an integrated membrane reactor and carbon dioxide capture system producing decarbonized hydrogen. Energy Conversion & Management.  
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.rser.2024.115034" target="_blank">
+    Sahmerdan, O., Cimsit, C., Arici, M., Colpan, C.O. 2025. Thermodynamic performance assessment of solar-based hydrogen production systems in Turkey: A detailed review. Renewable and Sustainable Energy Reviews. 208. 115034. 
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2024.05.095" target="_blank">
+    Soyturk, G., Cetinkaya, S.A., Yekta, M.A., Joghan, M.M.K., Mohebi, H., Kizilkan, O., Ghandehariun, A.M., Colpan, C.O., Acar, C., Handehariun, S. Dynamic analysis and multi-objective optimization of solar and hydrogen energy-based systems for residential applications: A review. International Journal of Hydrogen Energy. 
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2024.01.184" target="_blank">
+    Devrim, Y., Colpan, C.O. Assessment of Polybenzimidazole/MOF composite membranes for the improvement of high-temperature PEM fuel cell performance. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.11.291" target="_blank">
+    Soyturk, G., Kizilkan, O., Ezan ,M.A., Colpan, C.O. Design, modeling, and analysis of a PV/T and PEM fuel cell based hybrid energy system for an off-grid house. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.psep.2023.10.017" target="_blank">
+    Soyturk, G., Kizilkan, O., Ezan ,M.A., Colpan, C.O. PVT integrated hydrogen production with small-scale transcritical power cycle. Process Safety and Environmental Protection. 180. 351-360.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.08.358" target="_blank">
+    Alpaslan, E., Karaoglan, M.U., Colpan, C.O. Investigation of drive cycle simulation performance for electric, hybrid and fuel cell powertrains of a small-sized vehicle. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.07.122" target="_blank">
+    Dişli, T., Çetinkaya, S.A., Ezan, M.A., Colpan, C.O. Numerical investigations on the absorption of a metal hydride hydrogen storage tank based on various thermal management strategies. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.06.071" target="_blank">
+    Baniasadi, E., Ghojavand, F., Colpan, C.O., Devrim, Y. Performance analysis of a gas-to-power system based on protonic-ceramic electrochemical compressor. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.05.347" target="_blank">
+    Korkmaz, S.A., Çetinkaya, S.A., Yuksel, O., Konur, O., Erginer, K.E., Colpan, C.O. Comparison of various metaheuristic algorithms to extract the optimal PEMFC modeling parameters. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.05.159" target="_blank">
+    Soyturk, G., Kizilkan, O., Ezan, M.A., Colpan, C.O. 2023. Sizing of a solar and hydrogen-based integrated energy system of a stand-alone house in Izmir. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.04.235" target="_blank">
+    Bulanık Durmuş, G.N., Kuzu, C., Devrim, Y., Colpan, C.O. 2023. Experimental and modeling studies of a high-temperature electrochemical hydrogen compressor. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.03.192" target="_blank">
+    Bulanık Durmuş, G.N., Eren, E.O., Devrim, Y., Colpan, C.O., Özkan, N. 2023. High-temperature electrochemical hydrogen separation from reformate gases usin PBI/MOF composite membrane. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.fuproc.2023.107724" target="_blank">
+    Ince, A., Serincan, M.F., Colpan, C.O., Pasaogullari, U. A mini review on mathematical modeling of co-electrolysis at cell, stack and system levels. Fuel Processing Technology.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2023.01.320" target="_blank">
+    Korkmaz, S.A., Erginer, K.E., Yuksel, O., Konur, O., Colpan, C.O. Environmental and economic analyses of fuel cell and battery-based hybrid systems utilized as auxiliary power units on a chemical tanker vessel. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.3390/en16010341" target="_blank">
+    Cetinkaya, S.A., Disli, T., Soyturk, G., Kizilkan, O., Colpan, C.O. 2023. A review on thermal coupling of metal hydride storage tanks with fuel cells and electrolyzers. Energies. 16. 341.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2022.10.139" target="_blank">
+    Erdogan, A., Capotondo, F., Ince, A.C., Hagen, A., Colpan, C.O. 2023. Analysis of reformate syngas mixture fed SOFC through experimental and 0-D thermodynamic modeling studies. International Journal of Hydrogen Energy.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.enconman.2022.116367" target="_blank">
+    Nalbant Atak, Y., Colpan, C.O., Iulianelli, A. 2022. Energy and exergy analyses of an integrated membrane reactor and CO2 capture system to generate decarbonized hydrogen. Energy Conversion and Management. 272. 116367.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.fuel.2022.126182" target="_blank">
+    Ince, A.C., Colpan, C.O., Keles, A., Serincan, M.F., Pasaogullari, U., 2023. Scaling and performance assessment of power-to-methane system based on a operation scenario. Fuel. 332. 126182. 
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.energy.2022.125477" target="_blank">
+    Konur, O., Yuksel, O., Korkmaz, S.A., Colpan, C.O., Saatcioglu, O.Y., Koseoglu, B.  2023. Operation-dependent exergetic sustainability assessment and environmental analysis on a large tanker ship utilizing organic rankine cycle system. Energy. 262. 125477.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1080/15567036.2022.2121451" target="_blank">
+    Erdogan, A., Dursun, B., Colpan, C.O., Ayol, Z.  2022. A review on performance, economic, and environmental analyses of integrated solid oxide fuel cell and biomass gasification systems. Energy Sources, Part A: Recovery, Utilization, and Environmental Effects. 44(4). pp. 8403-8426.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.jclepro.2022.133230" target="_blank">
+    Konur, O., Yuksel, O., Korkmaz, S.A., Colpan, C.O., Saatcioglu, O.Y., Muslu, I. 2022. Thermal design and analysis of an organic Rankine cycle system  utilizing the main engine and cargo oil pump turbine based waste heats in a large tanker ship. Journal of Cleaner Production. 368. 113230.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2022.04.279" target="_blank">
+    Keçeci, M., Colpan, C.O., Karakoç, T.H. 2022. Reducing the fuel consumption and emissions with the use of an external fuel cell hybrid power unit for electric taxiing at airports. International Journal of Hydrogen Energy. 47(95). pp. 40502-40512.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1080/15567036.2022.2072981" target="_blank">
+    Konur, O., Colpan, C.O., Saatcioglu, O.Y. 2022. A comprehensive review on organic Rankine cycle systems used as waste heat recovery technologies for marine applications. Energy Sources, Part A: Recovery, Utilization, and Environmental Effects. 44(2). 4083-4122.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2022.04.186" target="_blank">
+    Ince, A.C., Serincan, M.F., Colpan, C.O. 2022. Local entropy generation and exergy analyses of the condenser in a direct methanol fuel cell system. International Journal of Hydrogen Energy. 47(45). 19850-19864.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1002/er.7966" target="_blank">
+    Alpaydin, G.U., Bulanık Durmuş, G.N., Colpan, C.O., Devrim, Y. 2022. Mathematical Modeling of a Direct Dimethyl Ether Fuel Cell. International Journal of Energy Research. 46(9). pp. 11989-12002.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1002/er.7940" target="_blank">
+    Bulanık Durmuş, G.N., Colpan, C.O., Devrim, Y. 2022. Investigation of the performance of high temperature electrochemical hydrogen purification from reformate gases. International Journal of Energy Research. 46(8). pp. 11443-11455.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2022.02.158" target="_blank">
+    Tezer, Ö., Karabağ, N., Öngen, A., Colpan, C.O., Ayol, A. 2022. Biomass gasification for sustainable energy production: A review. International Journal of Hydrogen Energy. 47(34). pp. 15419-15433.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1080/15567036.2021.1999347" target="_blank">
+    Alpaslan, E., Çetinkaya, S.A., Yüksel Alpaydın, C., Korkmaz, S.A., Karaoğlan, M.U., Colpan, C.O., Erginer, E., Gören, A. 2021. A review on fuel cell electric vehicle powertrain modeling and simulation. Energy Sources, Part A: Recovery, Utilization, and Environmental Effects. 1-37.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1002/er.7186" target="_blank">
+    Nalbant Atak, Y., Colpan, C.O., Iulianelli, A. 2021. A review on mathematical modeling of packed bed membrane reactors for hydrogen production from methane. International Journal of Energy Research. 45(15). pp. 20601-20633.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1115/1.4052163" target="_blank">
+    Alpaydın, C.Y., Colpan, C.O., Karaoglan, M.U., Gülbay, S.K. 2021. A comparison of the effects of sodium borohydride-based hydrogen storage system and compressed hydrogen storage tank on the fuel cell vehicle performance. Journal of Energy Resources Technology. 143(12). 120909.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.fuel.2021.121354" target="_blank">
+    Ince, A.C., Colpan, C.O., Hagen, A., Serincan, M.F 2021. Modeling and simulation of power-to-x systems: A review. Fuel. 304. 121354.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1108/AEAT-02-2021-0056" target="_blank">
+    Coban, K., Ekici, S., Colpan, C.O., Karakoç, T.H. 2021. Performance of a microjet using component map scaling. Aircraft Engineering and Aerospace Technology. 94(8). pp. 1201-1219.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.seta.2021.101207" target="_blank">
+    Calli, O., Colpan, C.O., Gunerhan, H. 2021. Thermoeconomic analysis of a biomass and solar energy based organic Rankine cycle system under part load behaviour. Sustainable Energy Technologies and Assessments. 46. 101207.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.jpowsour.2021.229743" target="_blank">
+    Bulanık Durmus, G.N., Colpan, C.O., Devrim, Y. 2021. A Review on the Development of the Electrochemical Hydrogen Compressors. Journal of Power Sources. 494. 229743.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2020.12.216" target="_blank">
+    Ozbek, E., Yalin, G., Karaoğlan, M.U., Ekici, S., Colpan, C.O., Karakoc, T.H. 2021. Architecture Design and Performance Analysis of a Hybrid Hydrogen Fuel Cell System for Unmanned Aerial Vehicle. International Journal of Hydrogen Energy. 46(30). pp. 16453-16464.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2020.10.038" target="_blank">
+    Iulianelli, A., Manisco, M., Bion, N., Le Valant, A., Epron, F., Colpan, C.O., Esposito, E., Jansen, J.C., Gensini, M., Caravella, A. 2021. Sustainable H2 generation via steam reforming of biogas in membrane reactors: H2S effects on membrane performance and catalytic activity. International Journal of Hydrogen Energy. 46(57). 29183-29197
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijheatmasstransfer.2020.120441" target="_blank">
+    Ince, A.C., Serincan, M.F., Colpan, C.O. 2020. A pseudo two-phase model to study effects of non-condensable gases on the water autonomy of a direct methanol fuel cell system. International Journal of Heat and Mass Transfer. 163. 120441.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1504/IJGW.2021.116712" target="_blank">
+    Karaoglan, M.U., Kuralay, S., Colpan, C.O. 2021. A study on determination of component sizing capacity for range performance, cost and CO2 production of an extended-range electric vehicle. International Journal of Global Warming. 24 (3-4). pp. 326-341.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.energy.2020.117293" target="_blank">
+    Sharifi, S., Rahimi, R., Mohebbi-Kalhori, D., Colpan, C.O. 2020. Coupled computational fluid dynamics-response surface methodology to optimize direct methanol fuel cell performance for greener energy generation. Energy. 117293.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2020.02.107" target="_blank">
+    Karaoglan, M.U., Ince, A., Glüsen, A., Colpan, C.O., Müller, M., Stolten, D., Kuralay, N.S. 2020. Comparison of single-cell testing, short-stack testing and mathematical modeling methods for a direct methanol fuel cell. International Journal of Hydrogen Energy. 46(6). pp. 4844-4856.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1002/er.5212" target="_blank">
+    Konur, O., Saatcioglu, O.Y., Korkmaz, S.A., Erdogan, A., Colpan, C.O. 2020. Heat exchanger network design of an organic Rankine cycle integrated waste heat recovery system of a marine vessel using pinch point analysis. International Journal of Energy Research. 44(15). pp. 12312-12328.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1007/s10973-019-09199-0" target="_blank">
+    Erdogan, A., Kizilkan, O., Colpan, C.O. 2020. Thermodynamic analysis of a supercritical closed Brayton cycle integrated with parabolic trough solar collectors. Journal of Thermal Analysis and Calorimetry. 141. pp. 231-244.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2019.01.252" target="_blank">
+    Nalbant, Y., Colpan, C.O., Devrim, Y. 2020. Energy and exergy performance assessments of a high temperature-proton exchange membrane fuel cell based integrated cogeneration system. International Journal of Hydrogen Energy. 45(5). pp. 3584-3594.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2019.02.181" target="_blank">
+    Alpaydın Yüksel, C., Gülbay Karahan, S., Colpan, C.O. 2019. A review on the catalysts used for hydrogen production from ammonia borane. International Journal of Hydrogen Energy. 45(5). pp. 3414-3434.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1177/1528083719844611" target="_blank">
+    Zizhou, R.E., Çay, A., Akçakoca Kumbasar, E.P., Colpan, C.O. Production of poly(vinyl alcohol)/Nafion® nanofibers and their stability assessment for the use in direct methanol fuel cells. Journal of Industrial Textiles. 50(6). pp. 773-793.
+    </a></li>
+
+    <li><a class="pub-link" href=" https://doi.org/10.1002/er.4504" target="_blank">
+    Alpaydin, G.U., Devrim, Y., Colpan, C.O. 2019. Performance of a HT-PEMFC having a catalyst with graphene and multi-walled carbon nanotube support. International Journal of Energy Research. 43. pp. 3578–3589.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1504/IJEX.2019.101625" target="_blank">
+    Asgharian, H., Baniasadi, E., Colpan, C.O. 2019. Energy, exergy and exergoeconomic analyses of a solar refrigeration cycle using nanofluid. International Journal of Exergy.  30.1. pp. 63-84.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.jclepro.2019.02.083" target="_blank">
+    Yuksel, O., Gulmez, Y., Konur, O., Korkmaz, S.A., Erdogan, A., Colpan, C.O. 2019. Performance assessment of a marine freshwater generator through exergetic optimization. Journal of Cleaner Production. 219. pp. 326-335.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1504/IJEX.2019.100362" target="_blank">
+    Calli, O., Colpan, C.O., Gunerhan, H. 2019. Energy, exergy and thermoeconomic analyses of biomass and solar powered organic Rankine cycles. International Journal of Exergy. 29. 2/3/4. 172-192.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1002/er.4508" target="_blank">
+    Ince, A.C., Karaoglan, M.U., Glüsen, A., Colpan, C.O., Müller, M., Stolten, D. Semi-empirical thermodynamic modeling of a direct methanol fuel cell system. International Journal of Energy Research. 43. pp. 3601–3615.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.jclepro.2018.11.065" target="_blank">
+    Karaoğlan, M.U., Kuralay, N.S., Colpan, C.O. 2019. The effect of gear ratios on the exhaust emissions and fuel consumption of a parallel hybrid vehicle powertrain. Journal of Cleaner Production. 210. pp. 1033-1041.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2018.11.039" target="_blank">
+    Karaoğlan, M.U., İnce, A.C., Colpan, C.O., Glüsen, A., Kuralay, N.S., Müller, M. Stolten, D. 2019. Simulation of a hybrid vehicle powertrain having direct methanol fuel cell system through a semi-theoretical approach. International Journal of Hydrogen Energy. 44(34). pp. 18981-18992.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1080/15435075.2018.1529592" target="_blank">
+    Karaoğlan, M.U., Kuralay, N.S., Colpan, C.O. 2019. Investigation of the effects of battery types and power management algorithms on drive cycle simulation for a range extended electric vehicle powertrain. International Journal of Green Energy. 16(1). pp. 1-11.
+    </a></li>
+    
+    <li><a class="pub-link" href="10.2298/tsci171101019e" target="_blank">
+    Erdogan, A., Colpan, C.O. 2018. Performance assesment of shell and tube heat exchanger based subcritical and supercritical organic rankine cycles. Thermal Science. 22(3). pp. S855-S866.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2017.11.123" target="_blank">
+    Colpan, C.O., Ouellette, D. 2018. Three dimensional modeling of a FE-DMFC short-stack. International Journal of Hydrogen Energy. 43(11). pp. 5951-5960.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2017.10.148" target="_blank">
+    Nalbant, Y., Colpan, C.O., Devrim, Y. 2018. Development of a one-dimensional and semi-empirical model for a high temperature proton exchange membrane fuel cell. International Journal of Hydrogen Energy. 43(11). pp. 5939-5950.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2017.06.073" target="_blank">
+     Ouellette, D., Ozden, A., Ercelik, M., Colpan, C.O., Ganjehsarabi, H., Li, X., Hamdullahpur, F. 2018. Assessment of different bio-inspired flow fields for direct methanol fuel cells through 3D modeling and experimental studies. International Journal of Hydrogen Energy. 43. pp. 1152-1170.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.energy.2017.07.179" target="_blank">
+    Coban, K., Colpan, C.O., Karakoç, T.H. 2017. Application of thermodynamic laws on a military helicopter. Energy. 140(2). pp. 1427-1436.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.electacta.2017.10.002" target="_blank">
+    Ozden, A., Ercelik, M., Devrim, Y., Colpan, C.O., Hamdullahpur, F. 2017. Evaluation of sulfonated polysulfone/zirconium hydrogen phosphate composite membranes for direct methanol fuel cells. Electrochimica Acta. 256. pp. 196-210.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.energy.2017.05.096" target="_blank">
+    Coban, K., Şöhret, Y., Colpan, C.O., Karakoç, T.H. 2017. Exergetic and exergoeconomic assessment of a small-scale turbojet fuelled with biodiesel. Energy. 140(2). pp. 1358-1367.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.renene.2017.03.037" target="_blank">
+    Erdogan, A., Colpan, C.O., Cakici, D.M. 2017. Thermal design and analysis of a shell and tube heat exchanger integrating a geothermal based organic Rankine cycle and parabolic trough solar collectors. Renewable Energy. 109. pp. 372-391.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1504/IJEX.2017.084524" target="_blank">
+    Erdogan, A., Cakici, D.M., Colpan, C.O., 2017. Thermodynamic optimization of a hybrid solar-geothermal power plant using Taguchi method. International Journal of Exergy. 23(1). pp. 63-84.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2017.01.188" target="_blank">
+    Ozden, A., Ercelik, M., Ozdemir, Y., Devrim, Y., Colpan, C.O., 2017. Enhancement of direct methanol fuel cell performance through the inclusion of Zirconium Phosphate. International Journal of Hydrogen Energy. 42. pp. 21501-21517.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2017.01.004" target="_blank">
+    Colpan, C.O., Ouellette, D., Glüsen, A., Müller, M., Stolten, D. 2017. Reduction of methanol crossover in a flowing electrolyte-direct methanol fuel cell. International Journal of Hydrogen Energy. 42. pp. 21530-21545.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2017.01.007" target="_blank">
+    Ozden, A., Ercelik, M., Ouellette, D., Colpan, C.O., Ganjehsarabi, H., Hamdullahpur, F. 2017. Designing, modeling and performance investigation of bio-inspired flow field based DMFCs. International Journal of Hydrogen Energy. 42. pp. 21546-21558.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2016.12.020" target="_blank">
+    Ercelik, M., Ozden, A., Seker, E., Colpan, C.O. 2017. Characterization and performance evaluation of Pt-Ru/C-TiO2 anode electrocatalyst for DMFC applications. International Journal of Hydrogen Energy. 42. pp. 21518-21529.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.energy.2016.11.083" target="_blank">
+    Cakici, D.M., Erdogan, A., Colpan, C.O. 2017. Thermodynamic performance assessment of an integrated geothermal powered supercritical regenerative organic Rankine cycle and parabolic trough solar collectors. Energy. 120. pp. 306-319.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2016.11.022" target="_blank">
+    Ouellette, D., Gencalp, U., Colpan, C.O. 2017. Effect of cathode flow field configuration on the performance of flowing electrolyte-direct methanol fuel cell. International Journal of Hydrogen Energy. 42(4). pp. 2680-2690.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2016.06.215" target="_blank">
+    Ercelik, M., Ozden, A., Devrim, Y., Colpan, C.O. 2017. Investigation of Nafion based composite membranes on the performance of DMFCs. International Journal of Hydrogen Energy. 42. pp. 2658-2668.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2016.06.214" target="_blank">
+     Atacan, O.F., Ouellette, D., Colpan, C.O. 2017. Two-dimensional multiphase non-isothermal modeling of a flowing electrolyte – direct methanol fuel cell. International Journal of Hydrogen Energy. 42. pp. 2669-2679.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1504/IJGW.2016.077911" target="_blank">
+     Poulad, M.E., Fung, A.S., He, L., Colpan, C.O. 2015. Modelling residential house electricity demand profile and analysis of Peaksaver Program using ANN – Case study for Toronto, Canada. International Journal of Global Warming. International Journal of Global Warming. 10(1/2/3). pp. 158-177.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2014.11.103" target="_blank">
+    Ouellette, D., Colpan, C.O., Matida, E., Cruickshank, C.A. 2015. A single domain approach to modeling the multiphase flow within a flowing electrolyte-direct methanol fuel cell. International Journal of Hydrogen Energy. 40. 7817-7828.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2015.02.001" target="_blank">
+    Ouellette, D., Colpan, C.O., Cruickshank, C.A., Matida, E. 2015. Parametric studies on the membrane arrangement and porous properties of the flowing electrolyte channel in a flowing electrolyte–direct methanol fuel cell. International Journal of Hydrogen Energy. 40. pp. 7732-7742.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1002/er.3204" target="_blank">
+    Ouellette, D., Colpan, C.O., Matida, E., Cruickshank, C., Hamdullahpur, F. 2015. A comprehensive 1D model of a flowing electrolyte-direct methanol fuel cell with experimental validation. International Journal of Energy Research. 39(1). pp. 33-45.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.jpowsour.2012.03.001" target="_blank">
+    Colpan, C.O., Fung, A.S., Hamdullahpur, F.  2012. 2D modeling of a flowing electrolyte-direct methanol fuel cell. Journal of Power Sources. 209. pp. 301-311.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.biombioe.2012.03.002" target="_blank">
+    Colpan, C.O., Fung, A.S., Hamdullahpur, F. 2012. Modeling of an integrated two-stage biomass gasifier and solid oxide fuel cell system. Biomass & Bioenergy. 42. pp. 132-142.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1504/IJEX.2012.045061" target="_blank">
+    Colpan, C.O. 2012. Exergy analysis of an integrated two-stage biomass gasifier and solid oxide fuel cell system. International Journal of Exergy. 10(1). pp. 61-76.
+    </a></li>
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.jpowsour.2010.12.013" target="_blank">
+    Colpan, C.O., Cruickshank, C.A., Matida, E., Hamdullahpur, F. 2011. 1D modeling of a flowing electrolyte-direct methanol fuel cell. Journal of Power Sources. 196. pp. 3572-3582.
+    </a></li>
+        
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2010.11.127" target="_blank">
+    Colpan, C.O., Hamdullahpur, F., Dincer, I. 2011. Transient heat transfer modeling of a solid oxide fuel cell operating with humidified hydrogen. International Journal of Hydrogen Energy. 36. pp. 11488-11499.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.jpowsour.2009.12.021" target="_blank">
+    Colpan, C.O., Hamdullahpur, F., Dincer, I. 2010. Heat-up and start-up modeling of direct internal reforming solid oxide fuel cells. Journal of Power Sources. 195. pp. 3579-3589.
+    </a></li>
+
+    
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2009.08.083" target="_blank">
+    Colpan, C.O., Hamdullahpur, F., Dincer, I., Yoo, Y. 2010. Effect of gasification agent on the performance of solid oxide fuel cell and biomass gasification systems. International Journal of Hydrogen Energy. 35. pp. 5001-5009.
+    </a></li>
+
+    
+    <li><a class="pub-link" href="https://doi.org/10.1002/ep.10394" target="_blank">
+    Colpan, C.O., Yoo, Y., Dincer, I., Hamdullahpur, F. 2009. Thermal modeling and simulation of an integrated solid oxide fuel cell and charcoal gasification system. Environmental Progress & Sustainable Energy. 28(3). pp. 380-385.
+    </a></li>
+
+    <li><a class="pub-link" href="10.1504/IJGW.2009.027083" target="_blank">
+    Colpan, C.O., Dincer, I., Hamdullahpur, F. 2009. Reduction of greenhouse gas emissions using various thermal systems in a landfill site. International Journal of Global Warming. 1(1/2/3). pp. 89-105.
+    </a></li>
+
+    
+    <li><a class="pub-link" href="https://doi.org/10.1002/er.1363" target="_blank">
+    Colpan, C.O., Dincer, I., Hamdullahpur, F. 2008. A review on macro level modeling of planar solid oxide fuel cells. International Journal of Energy Research. 32. pp. 336-355.
+    </a></li>
+
+
+    <li><a class="pub-link" href="https://doi.org/10.1016/j.ijhydene.2006.10.059" target="_blank">
+     Colpan, C.O., Dincer, I., Hamdullahpur, F. 2007. Thermodynamic modeling of direct internal reforming solid oxide fuel cells operating with syngas. International Journal of Hydrogen Energy. 32. pp. 787-795.
+    </a></li>
+
+
+    <li><a class="pub-link" href="https://doi.org/10.1002/er.1192" target="_blank">
+    Colpan, C.O., Yesin, T. 2006. Energetic, exergetic and thermoeconomic analysis of Bilkent combined cycle cogeneration plant. International Journal of Energy Research. 30. pp. 875-894.
+    </a></li>
+
+    <li><a class="pub-link" href="https://doi.org/10.1504/ijex.2006.009797" target="_blank">
+    Colpan, C.O., Yesin, T. 2006. Thermodynamic and thermoeconomic comparison of combined cycle cogeneration systems. International Journal of Exergy. 3(3). pp. 272-290.
+    </a></li>
+  </ul>
+</section>
+
+
+<!-- BOOKS -->
+<section id="books" class="card" style="margin-top:20px;">
+  <h2 class="accordion-header" onclick="toggleAccordion('book-list')">Books</h2>
+  <ul id="book-list" class="accordion-content" style="display:none; margin-top:10px;">
+    
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-031-86110-9" target="_blank">
+        Colpan, C.O., Korkmaz, S.A., Konur, O. 2024. Fuel Cell and Hydrogen Technologies in Maritime Transportation. Springer.
+      </a>
+    </li>
+
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-031-62987-7" target="_blank">
+        Karakoc, T.H., Colpan, C.O., Dalkiran, A. 2024. Sustainable Materials and Manufacturing Techniques in Aviation. Springer.
+      </a>
+    </li>
+
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-031-12296-5" target="_blank">
+        Karakoc, T.H., Colpan, C.O., Dalkiran, A. 2022. Progress in Sustainable Aviation. Springer.
+      </a>
+    </li>
+
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-030-99018-3" target="_blank">
+        Colpan, C.O., Kovac, A. (Eds.). 2022. Fuel Cell and Hydrogen Technologies in Aviation. Springer.
+      </a>
+    </li>
+
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-030-80779-5" target="_blank">
+        Karakoc, T.H., Colpan, C.O., Dalkiran, A. (Eds.). 2022. New Frontiers in Sustainable Aviation. Springer.
+      </a>
+    </li>
+   
+   <li>
+      <a class="pub-link" href="https://avesis.deu.edu.tr/yayin/a904ccc9-ad62-4e25-b34d-f5303bed9d8f/thermodynamic-analysis-and-optimization-of-geothermal-power-plants" target="_blank">
+        Colpan, C.O., Ezan, M.A., Kizilkan, O. (Eds.) 2021. Thermodynamic Analysis and Optimization of Geothermal Power Plants. Elsevier.
+      </a>
+    </li>
+   
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-030-20637-6 " target="_blank">
+        Dincer, I., Colpan, C.O., Ezan, M.A. (Eds.) 2020. Environmentally-Benign Energy Solutions. Springer.
+      </a>
+    </li>
+   
+    <li>
+      <a class="pub-link" href="10.1108/aeat-09-2021-328" target="_blank">
+        Karakoc, T.H., Colpan, C.O., Sohret, Y. (Eds.) 2018. Advances in Sustainable Aviation. Springer. New York.
+      </a>
+    </li>
+    
+    <li>
+      <a class="pub-link" href="https://books.google.com.tr/books?hl=tr&lr=&id=I5OZDgAAQBAJ&oi=fnd&pg=PP1&dq=Exergetic,+Energetic+and+Environmental+Dimensions+dincer+doi&ots=MEucQkLtfT&sig=wrC6AP9g2ULwVI4jy2l5Ib11QkQ&redir_esc=y#v=onepage&q=Exergetic%2C%20Energetic%20and%20Environmental%20Dimensions%20dincer%20doi&f=false" target="_blank">
+        Dincer, I., Colpan, C.O., Kizilkan, O. (Eds.) 2018. Exergetic, Energetic and Environmental Dimensions. Academic Press. London. UK.
+      </a>
+    </li>
+
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-319-34181-1" target="_blank">
+        Karakoc, T.H., Ozerdem, M.B., Sogut, M.Z., Colpan, C.O., Altuntas, O., Açıkkalp, E. (Eds.). 2016. Sustainable Aviation-Energy and Environmental Issues Springer. New York.
+      </a>
+    </li>
+
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-319-17031-2" target="_blank">
+        Dincer, I., Colpan, C.O., Kizilkan, O., Ezan, M.A. (Eds.). 2015. Progress in Clean Energy. Volume 2. Springer. New York.
+      </a>
+    </li>
+
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-3-319-16709-1" target="_blank">
+        Dincer, I., Colpan, C.O., Kizilkan, O., Ezan, M.A. (Eds.). 2015. Progress in Clean Energy. Volume 1. Springer. New York.
+      </a>
+    </li>
+
+    <li>
+      <a class="pub-link" href="https://doi.org/10.1007/978-1-4614-7588-0" target="_blank">
+        Dincer, I., Colpan, C.O., Kadioglu, F. (Eds.). 2013. Causes, Impacts and Solutions to Global Warming. Springer. New York, U.S.A..
+      </a>
+    </li>
+
+
+
+
+
+  </ul>
+</section>
+
+
+<!-- PROJECTS -->
+<section id="projects" class="card" style="margin-top:20px;">
+  <h2 class="accordion-header" onclick="toggleAccordion('proj-list')">Projects</h2>
+  <div id="proj-list" class="accordion-content" style="display:none; margin-top:10px;">
+    
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>TÜBİTAK 1001 (2025 - 2027) – Range Extension through Effective Thermal Management</h3>
+      <div class="more-info">
+        This project focuses on enhance the energy efficiency and extend the driving range of urban light-duty electric vehicles by optimizing the integrated thermal management of key components such as the fuel cell, battery, and metal hydride (MH) based hydrogen tank.
+      </div>
+    </div>
+
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>Dokuz Eylül University BAP (2023 - 2025) – Investigation of Thermal Management Systems for Batteries and Metal Hydride Tanks</h3>
+      <div class="more-info">
+        This project focuses on thermal behavior and cooling/heating strategies for battery-MH hybrid systems.
+      </div>
+    </div>
+
+
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>TÜBİTAK 2535 (2021 - 2023) – Multi-objective optimization of a Solar and Hydrogen Energy-based Electricity and Hot Water Generation System for off-grid Applications</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+    
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>Dokuz Eylül University BAP (2020 - 2023) – Optimization of Parameters of Energy Storage and Production System of Fuel Cell-Powered Series-Hybrid Land and Marine Vehicles and Development of Prototype Vehicles</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+    
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>TÜBİTAK 1001 (2020 - 2022) – Sustainable Energy Recovery from Treatment Plant Sludge, Green Wastes, and Olive Pomace via Gasification Process: Investigation of Beneficial Usage Alternatives of Gasification Products</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+    
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>TÜBİTAK 1001 (2020 - 2022) – Development of High Temperature Electrochemical Hydrogen Compressors for High Purity and Pressure Hydrogen Recovery</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>Dokuz Eylül University BAP (2019 - 2022) – Hydrogen Generation from Biogas in a Membrane Reactor</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>Dokuz Eylül University BAP (2018 - 2021) – Development of Innovative Direct Alcohol Fuel Cells</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>Dokuz Eylül University BAP (2016 - 2018) – Development and Testing of Direct Alcohol Fuel Cells Using Alternative Materials</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>Horizon2020 MSCA-IF-2014 (2015 - 2017) – Development of a High Performance Flowing Electrolyte-Direct Methanol Fuel Cell Stack Through Modeling and Experimental Studies</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>TÜBİTAK 3501 (2014 - 2016) – Development of a Three-dimensional and Two-phase Model for a Flowing Electrolyte-Direct Methanol Fuel Cell</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+
+    <div class="project-card" onclick="toggleInfo(this.querySelector('.more-info'))">
+      <h3>Dokuz Eylül University BAP (2013 - 2015) – Design and experimental characterization of high performance direct methanol fuel cell (DMFC) stacks</h3>
+      <div class="more-info">
+        
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="card" style="margin-top:20px;">
+  <h2>Contact</h2>
+  <p>Email: hydrogenlab@deu.edu.tr</p>
+  <p>Dokuz Eylül University – Izmir, Türkiye</p>
+</section>
+
+</main>
+
+<footer>
+   <span id="year"></span> Hydrogen Lab
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ----- SLIDER ----- */
+const slides = [
+  { title:"New Publication Accepted", text:"Our latest study on thermally coupled fuel cell and metal hydride tank system for vehicular application accepted.", img:"newpublication.jpg", link: "publication.html"},
+  { title:"TÜBİTAK 1001 Project Accepted", text:"Range Extension in Urban Light-Duty Electric Vehicles via Efficient Thermal Management of Metal Hydride Hydrogen Tank, Fuel Cell, and Battery Systems titled project accepted.", img:"1001project.jpg", link: "tubitak1001.html" },
+  { title:"IHTEC 2025 Event", text:"Our team at IHTEC 2025 conference.", img:"ihtec2025.jpg", link: "ihtec2025.html" }
+];
+
+let sIndex = 0;
+const titleEl = document.getElementById("hero-title");
+const descEl  = document.getElementById("hero-desc");
+const heroEl  = document.querySelector(".hero");
+
+function showSlide(i){
+  titleEl.classList.remove("show");
+  descEl.classList.remove("show");
+
+  setTimeout(()=>{
+    titleEl.textContent = slides[i].title;
+    descEl.textContent  = slides[i].text;
+
+    if(slides[i].img){
+      heroEl.style.backgroundImage = `url('${slides[i].img}')`;
+    } else {
+      heroEl.style.backgroundImage = "none";
+      heroEl.style.backgroundColor = "#ffffff";
+    }
+
+    titleEl.classList.add("show");
+    descEl.classList.add("show");
+  },250);
+}
+
+showSlide(0);
+
+document.getElementById("slider-prev").onclick = ()=>{
+  sIndex = (sIndex - 1 + slides.length) % slides.length;
+  showSlide(sIndex);
+};
+document.getElementById("slider-next").onclick = ()=>{
+  sIndex = (sIndex + 1) % slides.length;
+  showSlide(sIndex);
+};
+
+setInterval(()=>{
+  sIndex = (sIndex + 1) % slides.length;
+  showSlide(sIndex);
+},4000);
+
+/* ----- ACCORDION ----- */
+function toggleAccordion(id){
+  const content = document.getElementById(id);
+  const isVisible = content.style.display === "block";
+  content.style.display = isVisible ? "none" : "block";
+}
+
+/* ----- MORE INFO FOR PROJECTS ----- */
+function toggleInfo(el){
+  el.style.display = (el.style.display==="block") ? "none" : "block";
+}
+</script>
+
+</body>
+</html>

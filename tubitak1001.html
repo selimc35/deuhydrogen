@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>1001 Project - Hydrogen Lab</title>
+
+  <style>
+    :root{
+      --navy:#071A2B;
+      --navy-2:#0b2545;
+      --accent:#1E90FF;
+      --bg:#ffffff;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      font-family:Inter, ui-sans-serif, system-ui;
+      margin:0;
+      background:var(--bg);
+      color:#0f1724;
+      line-height:1.6;
+    }
+
+    header{
+      background:var(--navy-2);
+      color:white;
+      padding:18px 28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    nav a{
+      color:white;
+      text-decoration:none;
+      margin-left:16px;
+      font-weight:600;
+    }
+
+    .container{
+      max-width:1000px;
+      margin:40px auto;
+      padding:28px;
+    }
+
+    .project-card{
+      background:white;
+      border:1px solid #e6eef8;
+      border-radius:12px;
+      padding:28px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.05);
+    }
+
+    .project-card h1{
+      margin-top:0;
+    }
+
+    .project-image{
+      width:100%;
+      max-height:420px;
+      object-fit:cover;
+      border-radius:10px;
+      margin:20px 0;
+    }
+
+    footer{
+      background:var(--navy-2);
+      color:white;
+      text-align:center;
+      padding:16px;
+      margin-top:40px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div style="font-size:22px; font-weight:700;">Hydrogen Research Group</div>
+    <div style="font-size:13px; opacity:0.8;">Hydrogen Storage & Thermal Management</div>
+  </div>
+
+  <nav>
+    <a href="deuhydrogen3.html#home">Home</a>
+    <a href="deuhydrogen3.html#research">Research</a>
+    <a href="deuhydrogen3.html#facilities">Facilities</a>
+    <a href="deuhydrogen3.html#people">People</a>
+    <a href="deuhydrogen3.html#publications">Publications</a>
+    <a href="deuhydrogen3.html#projects">Projects</a>
+    <a href="deuhydrogen3.html#contact">Contact</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <div class="project-card">
+
+    <h1>TÜBİTAK 1001 Research Project</h1>
+
+    <p>
+      Our research group is conducting a TÜBİTAK 1001-funded project focuses on enhance the energy efficiency and extend the driving range of urban light-duty electric vehicles by optimizing the integrated thermal management of key components such as the fuel cell, battery, and metal hydride (MH) based hydrogen tank. 
+    </p>
+
+    <img src="1001project.jpg" class="project-image" alt="TÜBİTAK 1001 Project">
+
+  </div>
+
+</main>
+
+<footer>
+   <span id="2026"></span> Hydrogen Lab
+</footer>
+
+
+</body>
+</html>
