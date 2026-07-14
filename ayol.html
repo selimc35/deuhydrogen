@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Azize Ayol | Hydrogen Research Group</title>
+  <meta name="description" content="Azize Ayol, Professor at the Hydrogen Research Group, Dokuz Eylül University.">
+  <link rel="canonical" href="https://deuhydrogen.com/ayol.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --navy:#071A2B;
+      --navy-2:#0b2545;
+      --accent:#1E90FF;
+      --muted:#6b7280;
+      --bg:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter', ui-sans-serif, system-ui;
+      margin:0;
+      color:#0f1724;
+      background:var(--bg);
+      line-height:1.5;
+    }
+    a{color:inherit}
+    .skip-link{
+      position:absolute;
+      left:-999px;
+      top:auto;
+      background:var(--accent);
+      color:white;
+      padding:10px 16px;
+      border-radius:6px;
+      z-index:100;
+    }
+    .skip-link:focus{
+      left:16px;
+      top:16px;
+    }
+    :focus-visible{
+      outline:3px solid var(--accent);
+      outline-offset:2px;
+    }
+    header{
+      background:var(--navy-2);
+      color:white;
+      padding:18px 28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+      position:sticky;
+      top:0;
+      z-index:10;
+      box-shadow:0 1px 0 rgba(255,255,255,0.06);
+    }
+    nav{display:flex; flex-wrap:wrap;}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:white;
+      min-width:0;
+      flex:1 1 auto;
+    }
+    .brand-logo{
+      height:44px;
+      width:auto;
+      flex-shrink:0;
+    }
+    .brand-text{
+      min-width:0;
+    }
+    .brand-title{
+      font-size:20px;
+      font-weight:700;
+      line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .brand-subtitle{
+      font-size:12px;
+      font-weight:500;
+      color:rgba(255,255,255,0.7);
+      line-height:1.2;
+      margin-top:2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    nav a{
+      color:rgba(255,255,255,0.85);
+      text-decoration:none;
+      margin-left:16px;
+      font-weight:600;
+      font-size:14px;
+      padding:4px 2px;
+      border-bottom:2px solid transparent;
+      transition:color .15s ease, border-color .15s ease;
+    }
+    nav a:hover,
+    nav a:focus-visible{
+      color:white;
+      border-bottom-color:var(--accent);
+    }
+    .nav-toggle{
+      display:none;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      width:40px;
+      height:40px;
+      background:transparent;
+      border:none;
+      cursor:pointer;
+      padding:0;
+      flex-shrink:0;
+    }
+    .nav-toggle span{
+      display:block;
+      width:22px;
+      height:2px;
+      background:white;
+      border-radius:2px;
+      transition:transform .2s ease, opacity .2s ease;
+    }
+    .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
+    .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .muted{color:var(--muted);}
+    .micro{color:var(--muted); font-size:12px;}
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px;
+    }
+
+    /* HERO / SLIDER */
+    .hero{
+      position:relative;
+      padding:90px 28px;
+      border-radius:12px;
+      text-align:center;
+      min-height:300px;
+      background:var(--navy) center/cover no-repeat;
+      transition: background 0.5s ease;
+      color:white;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+      cursor:pointer;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.35);
+      border-radius:12px;
+      z-index:0;
+    }
+    .hero h1, .hero p{
+      position:relative;
+      z-index:1;
+    }
+    .hero h1{font-size:32px; margin:0 0 8px;}
+    .hero p{font-size:16px; opacity:.92; margin:0; max-width:520px;}
+
+    /* subtle H2-molecule watermark, ties visual identity to the subject */
+    .hero-motif{
+      position:absolute;
+      right:18px;
+      bottom:14px;
+      width:120px;
+      height:60px;
+      opacity:.16;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .fade{
+      opacity:0;
+      transition:opacity .5s ease;
+    }
+    .fade.show{
+      opacity:1;
+    }
+
+    #slider-prev, #slider-next{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,0.4);
+      border:none;
+      padding:6px 12px;
+      color:white;
+      font-size:26px;
+      line-height:1;
+      border-radius:6px;
+      cursor:pointer;
+      z-index:2;
+      transition:background .15s ease;
+    }
+    #slider-prev:hover, #slider-next:hover{background:rgba(0,0,0,0.65);}
+    #slider-prev{left:16px;}
+    #slider-next{right:16px;}
+
+    .slider-dots{
+      position:relative;
+      z-index:1;
+      display:flex;
+      gap:2px;
+      margin-top:12px;
+    }
+    .slider-dots button{
+      width:32px; height:32px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      padding:0;
+    }
+    .slider-dots button::before{
+      content:"";
+      display:block;
+      width:8px; height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.4);
+      transition:background .15s ease;
+    }
+    .slider-dots button[aria-current="true"]::before{background:white;}
+
+    /* CARDS */
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+    .card{
+      background:white;
+      padding:18px;
+      border-radius:8px;
+      border:1px solid #e7e7e7;
+    }
+    .card h2{margin-top:0;}
+
+    /* PEOPLE */
+    .people{
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
+      gap:24px 20px;
+    }
+    .person{
+      display:flex;
+      flex-direction:column;
+      text-decoration:none;
+      color:inherit;
+      cursor:pointer;
+    }
+    .person img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      border-radius:6px;
+      background:#eef2f6;
+      filter:grayscale(65%);
+      transition:filter .25s ease, transform .25s ease;
+    }
+    .person:hover img, .person:focus-visible img{
+      filter:grayscale(0%);
+      transform:translateY(-2px);
+    }
+    .person strong{
+      display:block;
+      margin-top:12px;
+      font-size:15px;
+      font-weight:700;
+      color:#0f1724;
+    }
+    .person .micro{
+      display:block;
+      margin-top:3px;
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+      font-size:10.5px;
+      font-weight:600;
+      color:var(--accent);
+    }
+
+    /* PROJECTS */
+    .project-card{
+      background:white;
+      border:1px solid #dce3ea;
+      border-radius:10px;
+      padding:12px 18px;
+      margin-bottom:10px;
+      cursor:pointer;
+      transition:border-color .15s ease;
+    }
+    .project-card:hover, .project-card:focus-visible{
+      border-color:var(--accent);
+    }
+    .project-card h3{
+      margin:0;
+      font-size:16px;
+    }
+    .more-info{
+      margin-top:10px;
+      display:none;
+      background:#f7f9fb;
+      border-radius:8px;
+      padding:12px;
+      border:1px solid #dce3ea;
+      color:var(--muted);
+    }
+
+    /* ACCORDION */
+    .accordion-header{
+      cursor:pointer;
+      user-select:none;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:18px;
+      margin-bottom:8px;
+    }
+    .accordion-header::after{
+      content:"+";
+      font-weight:400;
+      color:var(--muted);
+      transition:transform .2s ease;
+    }
+    .accordion-header[aria-expanded="true"]::after{
+      content:"–";
+    }
+
+    footer{
+      background:var(--navy-2);
+      color:white;
+      text-align:center;
+      padding:16px;
+      margin-top:20px;
+      border-radius:6px;
+      font-size:14px;
+    }
+
+    /* LINK STYLING */
+    a.pub-link{
+      color:var(--accent);
+      text-decoration:none;
+    }
+    a.pub-link:hover, a.pub-link:focus-visible{
+      text-decoration:underline;
+    }
+
+    #pub-list li, #book-list li{margin-bottom:10px;}
+
+    @media (max-width:760px){
+      header{padding:14px 18px; flex-wrap:wrap;}
+      .brand-logo{height:36px;}
+      .brand-text{max-width:150px;}
+      .brand-title{font-size:17px;}
+      .brand-subtitle{font-size:11px;}
+      .nav-toggle{display:flex;}
+      nav{
+        width:100%;
+        flex-direction:column;
+        max-height:0;
+        overflow:hidden;
+        transition:max-height .25s ease;
+      }
+      nav.open{max-height:400px; margin-top:14px;}
+      nav a{
+        margin:0;
+        padding:12px 4px;
+        border-bottom:1px solid rgba(255,255,255,0.12);
+        font-size:15px;
+      }
+      nav a:last-child{border-bottom:none;}
+      .container{padding:18px;}
+      .hero{padding:56px 18px; min-height:220px;}
+      .hero h1{font-size:24px;}
+      .grid{grid-template-columns:1fr;}
+      .people{grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));}
+      .hero-motif{display:none;}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto;}
+      .fade{transition:none;}
+      .person, .project-card, #slider-prev, #slider-next{transition:none;}
+    }
+
+    /* PROFILE HERO */
+    .profile-hero{
+      background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+      border-radius:12px;
+      padding:48px 36px;
+      color:white;
+      display:flex;
+      gap:36px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .profile-photo{
+      width:200px;
+      height:200px;
+      border-radius:10px;
+      object-fit:cover;
+      flex-shrink:0;
+      box-shadow:0 12px 30px rgba(0,0,0,0.35);
+      border:3px solid rgba(255,255,255,0.15);
+    }
+    .profile-info{flex:1; min-width:240px;}
+    .profile-role{
+      display:inline-block;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-size:12px;
+      font-weight:700;
+      color:var(--accent);
+      background:rgba(30,144,255,0.15);
+      padding:4px 10px;
+      border-radius:4px;
+      margin-bottom:10px;
+    }
+    .profile-info h1{
+      margin:0 0 6px;
+      font-size:32px;
+      line-height:1.15;
+    }
+    .profile-org{
+      color:rgba(255,255,255,0.65);
+      font-size:14px;
+      margin-bottom:22px;
+    }
+    .profile-interests-label{
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-size:12px;
+      font-weight:700;
+      color:rgba(255,255,255,0.55);
+      margin-bottom:10px;
+    }
+    .profile-interests{
+      list-style:none;
+      padding:0;
+      margin:0 0 26px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .profile-interests li{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      font-size:15px;
+    }
+    .profile-interests li span{
+      flex-shrink:0;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.15);
+      color:white;
+      font-size:11px;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:1px;
+    }
+    .profile-links{display:flex; gap:14px; flex-wrap:wrap;}
+    .profile-links a{
+      color:white;
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
+      border-bottom:2px solid var(--accent);
+      padding-bottom:2px;
+    }
+    .profile-links a:hover, .profile-links a:focus-visible{color:var(--accent);}
+    .back-link{
+      display:inline-block;
+      margin-bottom:18px;
+      color:var(--muted);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:600;
+    }
+    .back-link:hover, .back-link:focus-visible{color:var(--accent);}
+
+    @media (max-width:600px){
+      .profile-hero{padding:32px 20px; flex-direction:column; text-align:center; align-items:center;}
+      .profile-info{text-align:center;}
+      .profile-interests li{text-align:left;}
+      .profile-links{justify-content:center;}
+    }
+  </style>
+
+</head>
+<body>
+
+<a class="skip-link" href="#main">İçeriğe geç</a>
+
+<header>
+  <a href="index.html#home" class="brand">
+    <img src="logo.png" alt="Hydrogen Research Group logo" class="brand-logo">
+    <div class="brand-text">
+      <div class="brand-title">Hydrogen Research Group</div>
+      <div class="brand-subtitle">Hydrogen Storage &amp; Thermal Management</div>
+    </div>
+  </a>
+
+  <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Menüyü aç/kapat">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav aria-label="Ana menü" id="main-nav">
+    <a href="index.html#home">Home</a>
+    <a href="index.html#research">Research</a>
+    <a href="index.html#facilities">Facilities</a>
+    <a href="index.html#people">People</a>
+    <a href="index.html#publications">Publications</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<main class="container" id="main">
+
+  <a class="back-link" href="index.html#people">&larr; Back to People</a>
+
+  <section class="profile-hero">
+    <img class="profile-photo" src="ayol.jpg" alt="Azize Ayol">
+    <div class="profile-info">
+      <span class="profile-role">Professor</span>
+      <h1>Azize Ayol</h1>
+      <div class="profile-org">Hydrogen Research Group &middot; Dokuz Eylül University</div>
+
+      <div class="profile-interests-label">Interests</div>
+      <ul class="profile-interests">
+          <li><span>1</span>Environmental Engineering</li>
+          <li><span>2</span>Environmental Chemistry</li>
+          <li><span>3</span>Environmental Technology</li>
+      </ul>
+
+      <div class="profile-links">
+        <a href="https://avesis.deu.edu.tr/azize.ayol" target="_blank" rel="noopener noreferrer">View full profile on Avesis &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+   <span id="year"></span> Hydrogen Research Group — Dokuz Eylül University
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ----- MOBILE NAV (hamburger) ----- */
+const navToggle = document.getElementById("nav-toggle");
+const mainNav = document.getElementById("main-nav");
+
+function closeNav(){
+  mainNav.classList.remove("open");
+  navToggle.setAttribute("aria-expanded", "false");
+}
+
+navToggle.addEventListener("click", () => {
+  const isOpen = mainNav.classList.toggle("open");
+  navToggle.setAttribute("aria-expanded", String(isOpen));
+});
+
+mainNav.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", closeNav);
+});
+
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && mainNav.classList.contains("open")){
+    closeNav();
+    navToggle.focus();
+  }
+});
+
+window.addEventListener("resize", () => {
+  if(window.innerWidth > 760) closeNav();
+});
+</script>
+
+</body>
+</html>
